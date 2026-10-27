@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Magic 8 Pumpkin</title>
+    <meta name="description" content="A carved Magic 8 Ball pumpkin. Ask a question, spin the gourd, read your fortune." />
+    <meta name="theme-color" content="#060509" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="scene" aria-label="Interactive 3D carved pumpkin. Drag to spin." role="img"></canvas>
+
+    <div class="ui">
+      <header class="masthead">
+        <h1>Magic 8 Pumpkin</h1>
+        <p>Ask a yes-or-no question, then give the gourd a spin.</p>
+      </header>
+
+      <div class="answer" id="answer" aria-live="polite">
+        <span class="answer-label">The pumpkin says</span>
+        <span class="answer-text" id="answer-text"></span>
+      </div>
+
+      <form class="ask" id="ask" autocomplete="off">
+        <input
+          id="question"
+          name="question"
+          type="text"
+          maxlength="140"
+          placeholder="Will I get more treats than tricks?"
+          aria-label="Your question"
+        />
+        <button type="submit" id="spin-btn">Spin</button>
+      </form>
+
+      <p class="hint" id="hint"><span class="hint-icon">⟲</span> drag the pumpkin to spin it</p>
+    </div>
+
+    <div class="loader" id="loader" aria-busy="true">
+      <div class="loader-inner">
+        <div class="loader-flame"></div>
+        <p id="loader-text">Carving the pumpkin…</p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

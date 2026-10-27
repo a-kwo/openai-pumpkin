@@ -1,0 +1,20 @@
+{
+  "name": "magic-8-pumpkin",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "An interactive, photoreal 3D Magic 8 Ball pumpkin carving. Spin it for a prediction.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.186.1",
+    "three-bvh-csg": "^0.0.18",
+    "three-mesh-bvh": "^0.9.16"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}
