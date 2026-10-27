@@ -11,7 +11,7 @@ import { createNoise3D } from '../noise.js';
 import { SHAPE, displacePoint } from './pumpkinShape.js';
 import { makeSkinSurface, makeFleshSurface, makeStemSurface } from './shaders.js';
 
-export const CARVE = { discRadius: 0.36, discY: 0.02, ringInner: 0.43, ringOuter: 0.51, bridges: 4, bridgeWidth: 0.07, windowSize: 0.62, windowY: 0.0 };
+export const CARVE = { discRadius: 0.36, discY: 0.02, ringInner: 0.43, ringOuter: 0.51, bridges: 2, bridgeWidth: 0.07, windowSize: 0.62, windowY: 0.0 };
 
 function buildShell(scale, noise, inward) {
   const sphere = new SphereGeometry(1, 176, 120);
@@ -127,12 +127,12 @@ export function buildPumpkin(onProgress = () => {}) {
   frontCutter = evaluator.evaluate(frontCutter, tabBrush, SUBTRACTION);
   frontCutter.updateMatrixWorld();
 
-  // Ring around the face, left attached by four bridges like a real carving.
+  // Ring around the face, attached only at the left and right (theta = 0 and pi).
   const ringParts = [];
   const gap = CARVE.bridgeWidth / CARVE.ringOuter;
   for (let i = 0; i < CARVE.bridges; i++) {
-    const a0 = (i / CARVE.bridges) * Math.PI * 2 + Math.PI / 4 + gap / 2;
-    const a1 = ((i + 1) / CARVE.bridges) * Math.PI * 2 + Math.PI / 4 - gap / 2;
+    const a0 = (i / CARVE.bridges) * Math.PI * 2 + gap / 2;
+    const a1 = ((i + 1) / CARVE.bridges) * Math.PI * 2 - gap / 2;
     const shape = new Shape();
     shape.absarc(0, 0, CARVE.ringOuter, a0, a1, false);
     shape.absarc(0, 0, CARVE.ringInner, a1, a0, true);
