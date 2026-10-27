@@ -1,5 +1,5 @@
 import {
-  DoubleSide, BoxGeometry, BufferGeometry, CylinderGeometry, ExtrudeGeometry, Float32BufferAttribute, Group, Mesh,
+  DoubleSide, BufferGeometry, ExtrudeGeometry, Float32BufferAttribute, Group, Mesh,
   MeshPhysicalMaterial, Shape, SphereGeometry, Vector3,
 } from 'three';
 import { mergeGeometries, mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -97,12 +97,7 @@ export function buildPumpkin(onProgress = () => {}) {
   evaluator.attributes = ['position', 'normal'];
 
   onProgress('Carving the eight…');
-  const disc = new CylinderGeometry(CARVE.discRadius, CARVE.discRadius, 1.35, 96);
-  disc.rotateX(Math.PI / 2);
-  disc.translate(0, CARVE.discY, 0.95);
-  const discBrush = new Brush(disc, fleshMat);
-  discBrush.updateMatrixWorld();
-
+  // Only the strokes of the 8 are cut; the disc inside the ring stays solid.
   const font = new FontLoader().parse(fontJson);
   const eight = new TextGeometry('8', { font, size: 1, depth: 1.5, curveSegments: 14, bevelEnabled: false });
   eight.computeBoundingBox();
@@ -112,19 +107,8 @@ export function buildPumpkin(onProgress = () => {}) {
   eight.translate(-(bb.min.x + bb.max.x) / 2, -(bb.min.y + bb.max.y) / 2, 0);
   eight.scale(s, s, 1);
   eight.translate(0, CARVE.discY, 0.2);
-  const eightBrush = new Brush(eight, fleshMat);
-  eightBrush.updateMatrixWorld();
-  let frontCutter = evaluator.evaluate(discBrush, eightBrush, SUBTRACTION);
-  // Two thin tabs keep the 8 attached to the rim.
-  const tabLen = CARVE.discRadius - targetH / 2 + 0.03;
-  const tabs = mergeGeometries([
-    new BoxGeometry(0.06, tabLen, 1.6).translate(0, CARVE.discY + targetH / 2 + tabLen / 2 - 0.03, 0.95),
-    new BoxGeometry(0.06, tabLen, 1.6).translate(0, CARVE.discY - targetH / 2 - tabLen / 2 + 0.03, 0.95),
-  ], false);
-  tabs.deleteAttribute('uv');
-  const tabBrush = new Brush(tabs, fleshMat);
-  tabBrush.updateMatrixWorld();
-  frontCutter = evaluator.evaluate(frontCutter, tabBrush, SUBTRACTION);
+  eight.deleteAttribute('uv');
+  const frontCutter = new Brush(eight, fleshMat);
   frontCutter.updateMatrixWorld();
 
   // Ring around the face, attached only at the left and right (theta = 0 and pi).
